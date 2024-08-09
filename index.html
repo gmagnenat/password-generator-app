@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/assets/images/favicon-32x32.png"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+    <link rel="stylesheet" href="./scss/main.scss" />
+    <script src="main.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <div class="app">
+        <h1>Password Generator</h1>
+        <form novalidate>
+          <input class="input-password" type="text" />
+          <div>
+            <input class="input-range" type="range" min="8" max="32" />
+            <div>
+              <div>
+                <input type="checkbox" id="upper-option" />
+                <label for="upper-option">Include Uppercase Letters</label>
+              </div>
+              <div>
+                <input type="checkbox" id="lower-option" />
+                <label for="lower-option">Include Lowercase Letters</label>
+              </div>
+              <div>
+                <input type="checkbox" id="numbers-option" />
+                <label for="numbers-option">Include Numbers</label>
+              </div>
+              <div>
+                <input type="checkbox" id="symbols-option" />
+                <label for="symbols-option">Include Symbols</label>
+              </div>
+            </div>
+          </div>
+          <button class="btn-generate">Generate</button>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

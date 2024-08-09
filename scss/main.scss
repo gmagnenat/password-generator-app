@@ -1,0 +1,14 @@
+@use 'variables' as *;
+
+body {
+  background-color: $very-dark-gray;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100svh;
+}
+
+.app {
+  max-width: 40rem;
+}
