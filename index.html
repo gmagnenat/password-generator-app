@@ -9,37 +9,84 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+    <style>
+      @font-face {
+        font-family: "Jetbrains Mono";
+        src: url("./assets/fonts/JetBrainsMono-VariableFont_wght.ttf")
+          format("truetype");
+        font-style: normal;
+        font-weight: 300;
+        font-display: swap;
+      }
+    </style>
     <link rel="stylesheet" href="./scss/main.scss" />
     <script src="main.js" defer></script>
   </head>
   <body>
     <main>
       <div class="app">
-        <h1>Password Generator</h1>
-        <form novalidate>
-          <input class="input-password" type="text" />
-          <div>
-            <input class="input-range" type="range" min="8" max="32" />
-            <div>
-              <div>
-                <input type="checkbox" id="upper-option" />
+        <h1 class="app__title">Password Generator</h1>
+        <form class="form" novalidate>
+          <div class="password-wrapper" aria-live="polite">
+            <input class="input-password" type="password" readonly />
+            <button class="btn-copy">
+              <span class="sr-only">Copy password</span>
+            </button>
+          </div>
+          <div class="form__controls">
+            <div class="form__controls__heading-wrapper">
+              <h2 class="form__controls__title">Character Length</h2>
+              <p class="range-value">8</p>
+            </div>
+            <input class="input-range" type="range" min="4" max="16" />
+            <div class="checks-wrapper">
+              <div class="checkbox-group">
+                <input
+                  type="checkbox"
+                  id="upper-option"
+                  class="include-uppercase"
+                />
                 <label for="upper-option">Include Uppercase Letters</label>
               </div>
-              <div>
-                <input type="checkbox" id="lower-option" />
+              <div class="checkbox-group">
+                <input
+                  type="checkbox"
+                  id="lower-option"
+                  class="include-lowercase"
+                />
                 <label for="lower-option">Include Lowercase Letters</label>
               </div>
-              <div>
-                <input type="checkbox" id="numbers-option" />
+              <div class="checkbox-group">
+                <input
+                  type="checkbox"
+                  id="numbers-option"
+                  class="include-numbers"
+                />
                 <label for="numbers-option">Include Numbers</label>
               </div>
-              <div>
-                <input type="checkbox" id="symbols-option" />
+              <div class="checkbox-group">
+                <input
+                  type="checkbox"
+                  id="symbols-option"
+                  class="include-symbols"
+                />
                 <label for="symbols-option">Include Symbols</label>
               </div>
             </div>
+            <div class="strength">
+              <p class="strength-label">Strength</p>
+              <div class="strength-level-wrapper">
+                <p class="strength-level-text"></p>
+                <div class="scale">
+                  <span class="scale-item"></span>
+                  <span class="scale-item"></span>
+                  <span class="scale-item"></span>
+                  <span class="scale-item"></span>
+                </div>
+              </div>
+            </div>
+            <button class="btn-generate">Generate</button>
           </div>
-          <button class="btn-generate">Generate</button>
         </form>
       </div>
     </main>
