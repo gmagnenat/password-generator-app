@@ -1,5 +1,9 @@
 "use strict";
 
+document.addEventListener("DOMContentLoaded", () => {
+  updateRangeStyle();
+});
+
 const password = document.querySelector(".input-password");
 const btnGenerate = document.querySelector(".btn-generate");
 const btnCopy = document.querySelector(".btn-copy");
@@ -16,12 +20,15 @@ const togglePasswordVisibility = document.querySelector(
   ".toggle-password-visibility"
 );
 
-range.addEventListener("input", rangeValue);
+range.addEventListener("input", updateRangeStyle);
 
-function rangeValue() {
-  const value = range.value;
-  const target = document.querySelector(".range-value");
-  target.innerHTML = value;
+function updateRangeStyle() {
+  const min = range.min;
+  const max = range.max;
+  const currentValue = range.value;
+
+  range.style.backgroundSize =
+    ((currentValue - min) * 100) / (max - min) + "% 100%";
 }
 
 btnGenerate.addEventListener("click", (e) => {
@@ -97,11 +104,13 @@ function displayScale() {
   // clear rating lines
   scale.querySelectorAll(".scale-item").forEach((item) => {
     item.style.backgroundColor = "transparent";
+    item.classList.remove("active");
   });
 
   // set rating lines color
   for (let i = 0; i < strength; i++) {
     scaleItems[i].style.backgroundColor = scaleColor;
+    scaleItems[i].classList.add("active");
   }
 
   strengthLevelText.textContent = pwStrength;

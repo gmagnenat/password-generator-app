@@ -10,10 +10,16 @@ body {
   min-height: 100svh;
   color: white;
   font-family: $ff;
+  padding-inline: 1rem;
+}
+
+.main {
+  width: 100%;
 }
 
 .app {
-  max-width: 40rem;
+  max-width: 33.75rem;
+  margin-inline: auto;
 }
 
 .app__title {
@@ -24,7 +30,7 @@ body {
 
 .form__controls {
   margin-top: 1rem;
-  padding: 1rem 2rem;
+  padding: 1rem;
   background-color: $clr-dark-gray;
 }
 
@@ -32,18 +38,50 @@ body {
   font-size: 1.125rem;
 }
 
-.input-range {
-  margin-top: 1rem;
-  accent-color: $clr-neon-green;
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: $clr-very-dark-gray;
+  height: 0.5rem;
+  border-radius: 50px;
+  background-image: linear-gradient(
+    to right,
+    $clr-very-dark-gray 0%,
+    $clr-neon-green 0%
+  );
+  background-size: 50% 100%;
+  background-repeat: no-repeat;
 }
 
-.input-range::-webkit-slider-thumb {
+/* Chrome, Safari, Edge */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
   appearance: none;
-  width: 1.25rem;
-  height: 1.25rem;
-  background-color: $clr-neon-green;
-  border: 2px solid red;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: $clr-neon-green;
+  border-radius: 50%;
   cursor: pointer;
+}
+
+input[type="range"]:hover::-webkit-slider-thumb {
+  background: $clr-very-dark-gray;
+  border: 2px solid $clr-neon-green;
+}
+
+/* Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 1.5rem;
+  height: 1.5rem;
+  background: $clr-neon-green;
+  border-radius: 50%;
+  border-color: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]:hover::-moz-range-thumb {
+  background: $clr-very-dark-gray;
+  border: 2px solid $clr-neon-green;
 }
 
 input[type="checkbox"] {
@@ -52,6 +90,10 @@ input[type="checkbox"] {
   height: 1.25rem;
   border: 2px solid $clr-almost-white;
   cursor: pointer;
+}
+
+input[type="checkbox"]:hover {
+  border-color: $clr-neon-green;
 }
 
 input[type="checkbox"]:checked {
@@ -77,9 +119,11 @@ input[type="checkbox"]:checked {
   background-color: $clr-dark-gray;
   padding-left: 0;
   display: grid;
+  width: 100%;
 }
 
 .input-password {
+  width: 100%;
   grid-column: 1 / 1;
   grid-row: 1 / 1;
   padding: 0;
@@ -95,12 +139,25 @@ input[type="checkbox"]:checked {
 .btn-copy {
   grid-column: 1 / 1;
   grid-row: 1 / 1;
-  width: 4rem;
+  width: 3rem;
   margin-left: auto;
-  background: url("../assets/images/icon-copy.svg") no-repeat center;
+  background: transparent;
   background-size: 1.3rem;
   border: transparent;
   cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-copy svg {
+  fill: $clr-neon-green;
+}
+
+.btn-copy:hover svg {
+  fill: $clr-almost-white;
 }
 
 .input-password:focus {
@@ -110,10 +167,6 @@ input[type="checkbox"]:checked {
 
 .input-range {
   width: 100%;
-}
-
-.app {
-  max-width: 40rem;
 }
 
 .checks-wrapper {
@@ -137,10 +190,15 @@ input[type="checkbox"]:checked {
 
 .strength-label {
   text-transform: uppercase;
+  color: $clr-gray;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .strength-level-text {
   text-transform: uppercase;
+  font-size: 1.125rem;
+  font-weight: bold;
 }
 
 .strength {
@@ -149,7 +207,7 @@ input[type="checkbox"]:checked {
   align-items: center;
   height: 4rem;
   background-color: $clr-very-dark-gray;
-  padding-inline: 2rem;
+  padding-inline: 1rem;
   justify-content: space-between;
 }
 
@@ -165,14 +223,36 @@ input[type="checkbox"]:checked {
   border: 1px solid white;
 }
 
+.scale-item.active {
+  border-color: transparent;
+  background-color: $clr-neon-green;
+}
+
 .btn-generate {
   margin-top: 2rem;
   background-color: $clr-neon-green;
   width: 100%;
+  font-size: 1rem;
+  text-transform: uppercase;
   height: 4rem;
   font-weight: bold;
   border: 1px solid $clr-neon-green;
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn-generate:hover {
+  background-color: $clr-very-dark-gray;
+  border: 1px solid $clr-neon-green;
+  color: $clr-neon-green;
+}
+
+.btn-generate:hover svg {
+  fill: $clr-neon-green;
 }
 
 .sr-only {
@@ -185,4 +265,10 @@ input[type="checkbox"]:checked {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+@media screen and (min-width: 40rem) {
+  .main {
+    width: 100%;
+  }
 }
