@@ -139,10 +139,9 @@ input[type="checkbox"]:checked {
 .btn-copy {
   grid-column: 1 / 1;
   grid-row: 1 / 1;
-  width: 3rem;
+  width: max-content;
   margin-left: auto;
   background: transparent;
-  background-size: 1.3rem;
   border: transparent;
   cursor: pointer;
 
@@ -273,6 +272,7 @@ input[type="checkbox"]:checked {
   border-width: 0;
 }
 
+// add a bit of spacing to password input on mobile
 @media screen and (max-device-width: 48em) and (-webkit-min-device-pixel-ratio: 2) {
   input[type="password"] {
     letter-spacing: 8px;
