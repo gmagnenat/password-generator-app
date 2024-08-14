@@ -34,8 +34,8 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Solution URL: [https://www.frontendmentor.io/solutions/password-generator-app-pXjrFC9zmb](https://www.frontendmentor.io/solutions/password-generator-app-pXjrFC9zmb)
+- Live Site URL: [https://fascinating-lily-9ca600.netlify.app/](https://fascinating-lily-9ca600.netlify.app/)
 
 ## My process
 
@@ -77,14 +77,16 @@ input[type="range"] {
 This will update the range background color when the input changes. I'm also calling the updateRangeStyle function after the DOM is loaded in case of a page refresh by the user.
 
 ```js
-range.addEventListener("input", updateRangeStyle);
+UI_ELEMENTS.range.addEventListener("input", debounce(updateRange, 50));
 
-function updateRangeStyle() {
-  const min = range.min;
-  const max = range.max;
-  const currentValue = range.value;
+function updateRange() {
+  const min = UI_ELEMENTS.range.min;
+  const max = UI_ELEMENTS.range.max;
+  const currentValue = UI_ELEMENTS.range.value;
 
-  range.style.backgroundSize =
+  updatePassword();
+
+  UI_ELEMENTS.range.style.backgroundSize =
     ((currentValue - min) * 100) / (max - min) + "% 100%";
 }
 ```
@@ -98,22 +100,18 @@ I used this to measure the entropy of the generated password. This function coul
 
 ```js
 function calculatePasswordEntropy(password) {
-  let characterSetSize = 0;
-
   const hasLowerCase = /[a-z]/.test(password);
-  // other tests...
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasNumbers = /[0-9]/.test(password);
+  const hasSymbols = /[!@#$%^&*()_+{}|;:,.<>?]/.test(password);
 
-  if (hasLowerCase) characterSetSize += 26;
-  // other conditions...
+  const characterSetSize =
+    (hasLowerCase ? 26 : 0) +
+    (hasUpperCase ? 26 : 0) +
+    (hasNumbers ? 10 : 0) +
+    (hasSymbols ? 32 : 0);
 
-  // No valid character types found
-  if (characterSetSize === 0) return 0;
-
-  // calculate how many bits of information each character in the password contributes
-  // based on the size of the character set
-  const entropy = Math.log2(characterSetSize) * password.length;
-
-  return entropy;
+  return characterSetSize ? Math.log2(characterSetSize) * password.length : 0;
 }
 ```
 
@@ -149,7 +147,7 @@ const strengthConfig = [
 
 ## Author
 
-- Website - [Gwenael Magnenat](https://gmagnenat.com)
+- Website - [Gwenaël Magnenat](https://gmagnenat.com)
 - Frontend Mentor - [@gmagnenat](https://www.frontendmentor.io/profile/gmagnenat)
 - Twitter - [@gmagnenat](https://www.linkedin.com/in/gmagnenat)
 
