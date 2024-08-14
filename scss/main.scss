@@ -129,7 +129,7 @@ input[type="checkbox"]:checked {
   padding: 0;
   background-color: transparent;
   border: 1px solid transparent;
-  font-size: 2rem;
+  font-size: clamp(1.4rem, calc(1.4rem + ((1vw - 0.2rem) * 1.0909)), 2rem);
   line-height: 1.5;
   padding-left: 1rem;
   padding-block: 0.5rem;
@@ -182,6 +182,10 @@ input[type="checkbox"]:checked {
   align-items: center;
 }
 
+.checkbox-group label {
+  font-size: clamp(0.9rem, calc(0.9rem + ((1vw - 0.2rem) * 0.4091)), 1.125rem);
+}
+
 .strength-level-wrapper {
   display: flex;
   align-items: center;
@@ -199,6 +203,7 @@ input[type="checkbox"]:checked {
   text-transform: uppercase;
   font-size: 1.125rem;
   font-weight: bold;
+  display: none;
 }
 
 .strength {
@@ -265,6 +270,12 @@ input[type="checkbox"]:checked {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+@media screen and (min-width: 23rem) {
+  .strength-level-text {
+    display: block;
+  }
 }
 
 @media screen and (min-width: 40rem) {
