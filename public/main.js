@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateRangeStyle();
 });
 
-const password = document.querySelector(".input-password");
+const password = document.querySelector(".output-password");
 const btnGenerate = document.querySelector(".btn-generate");
 const btnCopy = document.querySelector(".btn-copy");
 const range = document.querySelector(".input-range");
@@ -36,15 +36,10 @@ btnGenerate.addEventListener("click", (e) => {
 
   const length = range.value;
   password.value = generateRandomString(length);
-  let passwordEntropy = calculatePasswordEntropy(password.value);
-  let passwordStrengh = evaluatePasswordStrength(passwordEntropy);
 
   displayScale();
 
-  console.log(`Generated password of length ${length}: ${password.value}`);
-  console.log(`Entropy level is: ${passwordEntropy}`);
-  console.log(`Password strength is: ${passwordStrengh}`);
-  password.focus();
+  btnCopy.focus();
 });
 
 btnCopy.addEventListener("click", async (e) => {
@@ -61,14 +56,6 @@ btnCopy.addEventListener("click", async (e) => {
   } catch (err) {
     console.error("Failed to copy text: ", err);
   }
-});
-
-password.addEventListener("focus", () => {
-  password.type = "text";
-});
-
-password.addEventListener("blur", () => {
-  password.type = "password";
 });
 
 function displayScale() {

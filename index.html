@@ -26,14 +26,9 @@
     <main class="main">
       <div class="app">
         <h1 class="app__title">Password Generator</h1>
-        <form class="form" novalidate>
-          <div class="password-wrapper" aria-live="polite">
-            <input
-              aria-label="hello"
-              class="input-password"
-              type="password"
-              readonly
-            />
+        <form class="form" novalidate aria-live="polite">
+          <div class="password-wrapper">
+            <output class="output-password"></output>
             <button class="btn-copy">
               <span class="sr-only">Copy password</span>
               <svg width="21" height="24" xmlns="http://www.w3.org/2000/svg">
@@ -93,7 +88,7 @@
                 <label for="symbols-option">Include Symbols</label>
               </div>
             </div>
-            <div class="strength" aria-live="polite">
+            <div class="strength">
               <p class="strength-label">Strength</p>
               <div class="strength-level-wrapper">
                 <p class="strength-level-text"></p>
@@ -107,7 +102,12 @@
             </div>
             <button aria-label="Generate password" class="btn-generate">
               Generate
-              <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
+              <svg
+                width="12"
+                height="12"
+                xmlns="http://www.w3.org/2000/svg"
+                focusable="false"
+              >
                 <path
                   d="m5.106 12 6-6-6-6-1.265 1.265 3.841 3.84H.001v1.79h7.681l-3.841 3.84z"
                 />

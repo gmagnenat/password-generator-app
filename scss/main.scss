@@ -122,15 +122,18 @@ input[type="checkbox"]:checked {
   width: 100%;
 }
 
-.input-password {
+.output-password {
   width: 100%;
   grid-column: 1 / 1;
   grid-row: 1 / 1;
   padding: 0;
+  display: flex;
+  align-items: center;
   background-color: transparent;
   border: 1px solid transparent;
   font-size: clamp(1.4rem, calc(1.4rem + ((1vw - 0.2rem) * 1.0909)), 2rem);
-  line-height: 1.5;
+  line-height: 1.4;
+  min-height: 4rem;
   padding-left: 1rem;
   padding-block: 0.5rem;
   color: $clr-almost-white;
@@ -141,6 +144,7 @@ input[type="checkbox"]:checked {
   grid-row: 1 / 1;
   width: max-content;
   margin-left: auto;
+  margin-right: 1rem;
   background: transparent;
   border: transparent;
   cursor: pointer;
@@ -159,7 +163,7 @@ input[type="checkbox"]:checked {
   fill: $clr-almost-white;
 }
 
-.input-password:focus {
+.output-password:focus {
   outline: transparent;
   border: 1px solid $clr-neon-green;
 }
