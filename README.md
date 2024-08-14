@@ -117,13 +117,26 @@ function calculatePasswordEntropy(password) {
 }
 ```
 
+I learned how to better organise the code in objects to encapsulate UI elements and constants for example.
+
+I tested different data structure to organise options. For the values I use to calculate the strength and update the color of the scale for example.
+
+```js
+const strengthConfig = [
+  { color: "#f64a4a", text: "Too Weak!" },
+  { color: "#fb7c58", text: "Weak" },
+  { color: "#f8cd65", text: "Medium" },
+  { color: "#a4ffaf", text: "Strong" },
+][strength - 1] || { color: "transparent", text: "" };
+```
+
 **Key JavaScript functions:**
 
-- `generateRandomString(length)`: Creates a random password based on the options the user selects.
+- `generateRandomString(length)`: Creates a random password based on the character sets the user selects.
 - `calculatePasswordEntropy(password)`: Calculates how strong the password is by looking at the different characters used.
 - `evaluatePasswordStrength(entropy)`: Decides the strength of the password (like "Weak" or "Strong") based on its entropy.
 - `displayScale()`: Updates the strength indicator to show how strong the password is.
-- `updateRangeStyle()`: Changes the style of the range slider based on the selected password length.
+- `updateRange()`: Changes the style of the range slider based on the selected password length.
 
 ### Continued development
 

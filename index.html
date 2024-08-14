@@ -45,7 +45,6 @@
                 Character Length
               </h2>
               <output
-                type="number"
                 id="rangeOutput"
                 class="range-value"
                 aria-labelledby="character-length"
@@ -59,6 +58,7 @@
               type="range"
               min="4"
               max="16"
+              aria-labelledby="character-length"
               oninput="rangeOutput.value = this.value"
             />
             <div class="checks-wrapper">
