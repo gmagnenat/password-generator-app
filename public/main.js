@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateRange();
 });
 
+// UI elements
 const UI_ELEMENTS = {
   password: document.querySelector(".output-password"),
   btnGenerate: document.querySelector(".btn-generate"),
@@ -28,6 +29,7 @@ const UI_ELEMENTS = {
   ),
 };
 
+// Character sets
 const CHAR_SETS = {
   UPPERCASE: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
   LOWERCASE: "abcdefghijklmnopqrstuvwxyz",
@@ -37,11 +39,23 @@ const CHAR_SETS = {
 
 // Add event listeners to the checkboxes and input
 function setEventListeners() {
-  UI_ELEMENTS.includeUppercase.addEventListener("change", updatePassword);
-  UI_ELEMENTS.includeLowercase.addEventListener("change", updatePassword);
-  UI_ELEMENTS.includeNumbers.addEventListener("change", updatePassword);
-  UI_ELEMENTS.includeSymbols.addEventListener("change", updatePassword);
-  UI_ELEMENTS.range.addEventListener("input", updateRange);
+  UI_ELEMENTS.includeUppercase.addEventListener(
+    "change",
+    debounce(updatePassword, 300)
+  );
+  UI_ELEMENTS.includeLowercase.addEventListener(
+    "change",
+    debounce(updatePassword, 300)
+  );
+  UI_ELEMENTS.includeNumbers.addEventListener(
+    "change",
+    debounce(updatePassword, 300)
+  );
+  UI_ELEMENTS.includeSymbols.addEventListener(
+    "change",
+    debounce(updatePassword, 300)
+  );
+  UI_ELEMENTS.range.addEventListener("input", debounce(updateRange, 50));
   UI_ELEMENTS.btnGenerate.addEventListener("click", handleGenerateClick);
   UI_ELEMENTS.btnCopy.addEventListener("click", handleCopyClick);
 }
@@ -70,80 +84,6 @@ function updatePassword() {
 function generatePassword() {
   const length = UI_ELEMENTS.range.value;
   return generateRandomString(length);
-}
-
-// Generate a random new password
-UI_ELEMENTS.btnGenerate.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  UI_ELEMENTS.password.value = generatePassword();
-
-  displayScale();
-
-  UI_ELEMENTS.btnCopy.focus();
-});
-
-// Allow user to copy the password to clipboard
-UI_ELEMENTS.btnCopy.addEventListener("click", async (e) => {
-  e.preventDefault();
-
-  if (UI_ELEMENTS.password.value === "") {
-    alert("There is no password to copy!");
-    return;
-  }
-
-  try {
-    await navigator.clipboard.writeText(UI_ELEMENTS.password.value);
-    alert("Password copied to clipboard!");
-  } catch (err) {
-    console.error("Failed to copy text: ", err);
-  }
-});
-
-// Update strength scale style based on password strength
-function displayScale() {
-  const strength = evaluatePasswordStrength(
-    calculatePasswordEntropy(UI_ELEMENTS.password.value)
-  );
-
-  let pwStrength = "";
-
-  let scaleColor = "";
-
-  switch (strength) {
-    case 1:
-      scaleColor = "#f64a4a";
-      pwStrength = "Too Weak!";
-      break;
-    case 2:
-      scaleColor = "#fb7c58";
-      pwStrength = "Weak";
-      break;
-    case 3:
-      scaleColor = "#f8cd65";
-      pwStrength = "Medium";
-      break;
-    case 4:
-      scaleColor = "#a4ffaf";
-      pwStrength = "Strong";
-      break;
-    default:
-      scaleColor = "transparent";
-  }
-
-  // clear rating lines
-  UI_ELEMENTS.scale.querySelectorAll(".scale-item").forEach((item) => {
-    item.style.backgroundColor = "transparent";
-    item.classList.remove("active");
-  });
-
-  // set rating lines color
-  for (let i = 0; i < strength; i++) {
-    UI_ELEMENTS.scaleItems[i].style.backgroundColor = scaleColor;
-    UI_ELEMENTS.scaleItems[i].classList.add("active");
-  }
-
-  UI_ELEMENTS.strengthLevelText.textContent = pwStrength;
 }
 
 // Generate a random string based on selected character sets
@@ -196,39 +136,54 @@ async function handleCopyClick(e) {
   }
 }
 
+function displayScale() {
+  const strength = evaluatePasswordStrength(
+    calculatePasswordEntropy(UI_ELEMENTS.password.value)
+  );
+  const strengthConfig = [
+    { color: "#f64a4a", text: "Too Weak!" },
+    { color: "#fb7c58", text: "Weak" },
+    { color: "#f8cd65", text: "Medium" },
+    { color: "#a4ffaf", text: "Strong" },
+  ][strength - 1] || { color: "transparent", text: "" };
+
+  UI_ELEMENTS.scaleItems.forEach((item, index) => {
+    item.style.backgroundColor =
+      index < strength ? strengthConfig.color : "transparent";
+    item.classList.toggle("active", index < strength);
+  });
+
+  UI_ELEMENTS.strengthLevelText.textContent = strengthConfig.text;
+}
+
 // Calculate password entropy based on character set size and password length
 function calculatePasswordEntropy(password) {
-  let characterSetSize = 0;
-
   const hasLowerCase = /[a-z]/.test(password);
   const hasUpperCase = /[A-Z]/.test(password);
   const hasNumbers = /[0-9]/.test(password);
   const hasSymbols = /[!@#$%^&*()_+{}|;:,.<>?]/.test(password);
 
-  if (hasLowerCase) characterSetSize += 26;
-  if (hasUpperCase) characterSetSize += 26;
-  if (hasNumbers) characterSetSize += 10;
-  if (hasSymbols) characterSetSize += 32; // Assuming 32 commonly used symbols
+  const characterSetSize =
+    (hasLowerCase ? 26 : 0) +
+    (hasUpperCase ? 26 : 0) +
+    (hasNumbers ? 10 : 0) +
+    (hasSymbols ? 32 : 0);
 
-  if (characterSetSize === 0) return 0; // No valid character types found
-
-  const entropy = Math.log2(characterSetSize) * password.length;
-  return entropy;
+  return characterSetSize ? Math.log2(characterSetSize) * password.length : 0;
 }
 
 // Evaluate password strength based on entropy
 function evaluatePasswordStrength(entropy) {
-  let strengthLevel = 0;
+  if (entropy < 50) return 1;
+  if (entropy < 70) return 2;
+  if (entropy < 90) return 3;
+  return 4;
+}
 
-  if (entropy < 50) {
-    strengthLevel = 1;
-  } else if (entropy < 70) {
-    strengthLevel = 2;
-  } else if (entropy < 90) {
-    strengthLevel = 3;
-  } else {
-    strengthLevel = 4;
-  }
-
-  return strengthLevel;
+function debounce(func, delay) {
+  let timeoutId;
+  return function (...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(this, args), delay);
+  };
 }
