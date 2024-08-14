@@ -243,6 +243,7 @@ input[type="checkbox"]:checked {
   font-weight: bold;
   border: 1px solid $clr-neon-green;
   cursor: pointer;
+  color: $clr-very-dark-gray;
 
   display: flex;
   align-items: center;
@@ -270,6 +271,14 @@ input[type="checkbox"]:checked {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+@media screen and (max-device-width: 48em) and (-webkit-min-device-pixel-ratio: 2) {
+  input[type="password"] {
+    letter-spacing: 8px;
+    font-size: inherit;
+    line-height: 2.15;
+  }
 }
 
 @media screen and (min-width: 23rem) {
