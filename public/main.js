@@ -3,7 +3,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   includeLowercase.checked = true;
   setEventListeners();
-  updateRangeStyle();
+  updateRange();
 });
 
 const password = document.querySelector(".output-password");
@@ -22,15 +22,17 @@ const togglePasswordVisibility = document.querySelector(
   ".toggle-password-visibility"
 );
 
+// Add event listeners to the checkboxes and input
 function setEventListeners() {
-  includeUppercase.addEventListener("change", updateRangeStyle);
-  includeLowercase.addEventListener("change", updateRangeStyle);
-  includeNumbers.addEventListener("change", updateRangeStyle);
-  includeSymbols.addEventListener("change", updateRangeStyle);
-  range.addEventListener("input", updateRangeStyle);
+  includeUppercase.addEventListener("change", updatePassword);
+  includeLowercase.addEventListener("change", updatePassword);
+  includeNumbers.addEventListener("change", updatePassword);
+  includeSymbols.addEventListener("change", updatePassword);
+  range.addEventListener("input", updateRange);
 }
 
-function updateRangeStyle() {
+// Update range style based on the value
+function updateRange() {
   const min = range.min;
   const max = range.max;
   const currentValue = range.value;
@@ -41,11 +43,15 @@ function updateRangeStyle() {
     ((currentValue - min) * 100) / (max - min) + "% 100%";
 }
 
+// Generate new password and update scale
 function updatePassword() {
   password.value = generatePassword();
+
+  // refresh password strength scale
   displayScale();
 }
 
+// Generate a random password of given length
 function generatePassword() {
   const length = range.value;
   const generatedPassword = generateRandomString(length);
@@ -53,6 +59,7 @@ function generatePassword() {
   return generatedPassword;
 }
 
+// Generate a random new password
 btnGenerate.addEventListener("click", (e) => {
   e.preventDefault();
 
@@ -63,6 +70,7 @@ btnGenerate.addEventListener("click", (e) => {
   btnCopy.focus();
 });
 
+// Allow user to copy the password to clipboard
 btnCopy.addEventListener("click", async (e) => {
   e.preventDefault();
 
@@ -79,6 +87,7 @@ btnCopy.addEventListener("click", async (e) => {
   }
 });
 
+// Update strength scale style based on password strength
 function displayScale() {
   const strength = evaluatePasswordStrength(
     calculatePasswordEntropy(password.value)
@@ -124,6 +133,7 @@ function displayScale() {
   strengthLevelText.textContent = pwStrength;
 }
 
+// Generate a random string based on selected character sets
 function generateRandomString(length) {
   let characters = "";
 
@@ -153,6 +163,7 @@ function generateRandomString(length) {
   return randomString;
 }
 
+// Calculate password entropy based on character set size and password length
 function calculatePasswordEntropy(password) {
   let characterSetSize = 0;
 
@@ -172,6 +183,7 @@ function calculatePasswordEntropy(password) {
   return entropy;
 }
 
+// Evaluate password strength based on entropy
 function evaluatePasswordStrength(entropy) {
   let strengthLevel = 0;
 
