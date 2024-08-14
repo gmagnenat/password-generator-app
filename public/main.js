@@ -1,6 +1,8 @@
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
+  includeLowercase.checked = true;
+  setEventListeners();
   updateRangeStyle();
 });
 
@@ -20,22 +22,41 @@ const togglePasswordVisibility = document.querySelector(
   ".toggle-password-visibility"
 );
 
-range.addEventListener("input", updateRangeStyle);
+function setEventListeners() {
+  includeUppercase.addEventListener("change", updateRangeStyle);
+  includeLowercase.addEventListener("change", updateRangeStyle);
+  includeNumbers.addEventListener("change", updateRangeStyle);
+  includeSymbols.addEventListener("change", updateRangeStyle);
+  range.addEventListener("input", updateRangeStyle);
+}
 
 function updateRangeStyle() {
   const min = range.min;
   const max = range.max;
   const currentValue = range.value;
 
+  updatePassword();
+
   range.style.backgroundSize =
     ((currentValue - min) * 100) / (max - min) + "% 100%";
+}
+
+function updatePassword() {
+  password.value = generatePassword();
+  displayScale();
+}
+
+function generatePassword() {
+  const length = range.value;
+  const generatedPassword = generateRandomString(length);
+
+  return generatedPassword;
 }
 
 btnGenerate.addEventListener("click", (e) => {
   e.preventDefault();
 
-  const length = range.value;
-  password.value = generateRandomString(length);
+  password.value = generatePassword();
 
   displayScale();
 
