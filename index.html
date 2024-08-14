@@ -8,11 +8,12 @@
       href="/assets/images/favicon-32x32.png"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <title>Password Generator App - A frontendmentor challenge</title>
     <style>
       @font-face {
         font-family: "Jetbrains Mono";
-        src: url("./assets/fonts/JetBrainsMono-VariableFont_wght.ttf")
+        src: url("./assets/fonts/JetBrainsMono-VariableFont_wght.woff2")
+            format("woff2"),
           format("truetype");
         font-style: normal;
         font-weight: 400 700;
@@ -106,7 +107,11 @@
                 </div>
               </div>
             </div>
-            <button aria-label="Generate password" class="btn-generate">
+            <button
+              type="submit"
+              aria-label="Generate password"
+              class="btn-generate"
+            >
               Generate
               <svg
                 width="12"

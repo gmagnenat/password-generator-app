@@ -1,51 +1,66 @@
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
-  includeLowercase.checked = true;
+  // Set default values
+  UI_ELEMENTS.includeLowercase.checked = true;
+
+  // Set event listeners
   setEventListeners();
+
+  // Set the range style on page load and generate a new password
   updateRange();
 });
 
-const password = document.querySelector(".output-password");
-const btnGenerate = document.querySelector(".btn-generate");
-const btnCopy = document.querySelector(".btn-copy");
-const range = document.querySelector(".input-range");
-const scale = document.querySelector(".scale");
-const scaleItems = document.querySelectorAll(".scale-item");
-const strengthLevelText = document.querySelector(".strength-level-text");
+const UI_ELEMENTS = {
+  password: document.querySelector(".output-password"),
+  btnGenerate: document.querySelector(".btn-generate"),
+  btnCopy: document.querySelector(".btn-copy"),
+  range: document.querySelector(".input-range"),
+  scale: document.querySelector(".scale"),
+  scaleItems: document.querySelectorAll(".scale-item"),
+  strengthLevelText: document.querySelector(".strength-level-text"),
+  includeUppercase: document.querySelector(".include-uppercase"),
+  includeLowercase: document.querySelector(".include-lowercase"),
+  includeNumbers: document.querySelector(".include-numbers"),
+  includeSymbols: document.querySelector(".include-symbols"),
+  togglePasswordVisibility: document.querySelector(
+    ".toggle-password-visibility"
+  ),
+};
 
-const includeUppercase = document.querySelector(".include-uppercase");
-const includeLowercase = document.querySelector(".include-lowercase");
-const includeNumbers = document.querySelector(".include-numbers");
-const includeSymbols = document.querySelector(".include-symbols");
-const togglePasswordVisibility = document.querySelector(
-  ".toggle-password-visibility"
-);
+const CHAR_SETS = {
+  UPPERCASE: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  LOWERCASE: "abcdefghijklmnopqrstuvwxyz",
+  NUMBERS: "0123456789",
+  SYMBOLS: "!@#$%^&*()_+{}|;:,.<>?",
+};
 
 // Add event listeners to the checkboxes and input
 function setEventListeners() {
-  includeUppercase.addEventListener("change", updatePassword);
-  includeLowercase.addEventListener("change", updatePassword);
-  includeNumbers.addEventListener("change", updatePassword);
-  includeSymbols.addEventListener("change", updatePassword);
-  range.addEventListener("input", updateRange);
+  UI_ELEMENTS.includeUppercase.addEventListener("change", updatePassword);
+  UI_ELEMENTS.includeLowercase.addEventListener("change", updatePassword);
+  UI_ELEMENTS.includeNumbers.addEventListener("change", updatePassword);
+  UI_ELEMENTS.includeSymbols.addEventListener("change", updatePassword);
+  UI_ELEMENTS.range.addEventListener("input", updateRange);
+  UI_ELEMENTS.btnGenerate.addEventListener("click", handleGenerateClick);
+  UI_ELEMENTS.btnCopy.addEventListener("click", handleCopyClick);
 }
 
 // Update range style based on the value
 function updateRange() {
-  const min = range.min;
-  const max = range.max;
-  const currentValue = range.value;
+  const min = UI_ELEMENTS.range.min;
+  const max = UI_ELEMENTS.range.max;
+  const currentValue = UI_ELEMENTS.range.value;
 
   updatePassword();
 
-  range.style.backgroundSize =
+  UI_ELEMENTS.range.style.backgroundSize =
     ((currentValue - min) * 100) / (max - min) + "% 100%";
 }
 
 // Generate new password and update scale
 function updatePassword() {
-  password.value = generatePassword();
+  UI_ELEMENTS.password.value = generatePassword();
 
   // refresh password strength scale
   displayScale();
@@ -53,34 +68,32 @@ function updatePassword() {
 
 // Generate a random password of given length
 function generatePassword() {
-  const length = range.value;
-  const generatedPassword = generateRandomString(length);
-
-  return generatedPassword;
+  const length = UI_ELEMENTS.range.value;
+  return generateRandomString(length);
 }
 
 // Generate a random new password
-btnGenerate.addEventListener("click", (e) => {
+UI_ELEMENTS.btnGenerate.addEventListener("click", (e) => {
   e.preventDefault();
 
-  password.value = generatePassword();
+  UI_ELEMENTS.password.value = generatePassword();
 
   displayScale();
 
-  btnCopy.focus();
+  UI_ELEMENTS.btnCopy.focus();
 });
 
 // Allow user to copy the password to clipboard
-btnCopy.addEventListener("click", async (e) => {
+UI_ELEMENTS.btnCopy.addEventListener("click", async (e) => {
   e.preventDefault();
 
-  if (password.value === "") {
+  if (UI_ELEMENTS.password.value === "") {
     alert("There is no password to copy!");
     return;
   }
 
   try {
-    await navigator.clipboard.writeText(password.value);
+    await navigator.clipboard.writeText(UI_ELEMENTS.password.value);
     alert("Password copied to clipboard!");
   } catch (err) {
     console.error("Failed to copy text: ", err);
@@ -90,7 +103,7 @@ btnCopy.addEventListener("click", async (e) => {
 // Update strength scale style based on password strength
 function displayScale() {
   const strength = evaluatePasswordStrength(
-    calculatePasswordEntropy(password.value)
+    calculatePasswordEntropy(UI_ELEMENTS.password.value)
   );
 
   let pwStrength = "";
@@ -119,35 +132,35 @@ function displayScale() {
   }
 
   // clear rating lines
-  scale.querySelectorAll(".scale-item").forEach((item) => {
+  UI_ELEMENTS.scale.querySelectorAll(".scale-item").forEach((item) => {
     item.style.backgroundColor = "transparent";
     item.classList.remove("active");
   });
 
   // set rating lines color
   for (let i = 0; i < strength; i++) {
-    scaleItems[i].style.backgroundColor = scaleColor;
-    scaleItems[i].classList.add("active");
+    UI_ELEMENTS.scaleItems[i].style.backgroundColor = scaleColor;
+    UI_ELEMENTS.scaleItems[i].classList.add("active");
   }
 
-  strengthLevelText.textContent = pwStrength;
+  UI_ELEMENTS.strengthLevelText.textContent = pwStrength;
 }
 
 // Generate a random string based on selected character sets
 function generateRandomString(length) {
   let characters = "";
 
-  if (includeUppercase.checked) {
-    characters += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  if (UI_ELEMENTS.includeUppercase.checked) {
+    characters += CHAR_SETS.UPPERCASE;
   }
-  if (includeLowercase.checked) {
-    characters += "abcdefghijklmnopqrstuvwxyz";
+  if (UI_ELEMENTS.includeLowercase.checked) {
+    characters += CHAR_SETS.LOWERCASE;
   }
-  if (includeNumbers.checked) {
-    characters += "0123456789";
+  if (UI_ELEMENTS.includeNumbers.checked) {
+    characters += CHAR_SETS.NUMBERS;
   }
-  if (includeSymbols.checked) {
-    characters += "!@#$%^&*()_+{}|;:,.<>?";
+  if (UI_ELEMENTS.includeSymbols.checked) {
+    characters += CHAR_SETS.SYMBOLS;
   }
 
   if (characters === "") {
@@ -155,12 +168,32 @@ function generateRandomString(length) {
     return "";
   }
 
-  let randomString = "";
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    randomString += characters[randomIndex];
+  return Array.from(
+    { length },
+    () => characters[Math.floor(Math.random() * characters.length)]
+  ).join("");
+}
+
+function handleGenerateClick(e) {
+  e.preventDefault();
+  updatePassword();
+  UI_ELEMENTS.btnCopy.focus();
+}
+
+async function handleCopyClick(e) {
+  e.preventDefault();
+
+  if (UI_ELEMENTS.password.value === "") {
+    alert("There is no password to copy!");
+    return;
   }
-  return randomString;
+
+  try {
+    await navigator.clipboard.writeText(UI_ELEMENTS.password.value);
+    alert("Password copied to clipboard!");
+  } catch (err) {
+    console.error("Failed to copy text: ", err);
+  }
 }
 
 // Calculate password entropy based on character set size and password length
